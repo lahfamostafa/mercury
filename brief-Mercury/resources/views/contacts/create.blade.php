@@ -114,7 +114,7 @@
                 <!-- Téléphone -->
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                        Téléphone <span class="text-gray-400 text-xs">(optionnel)</span>
+                        Téléphone
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

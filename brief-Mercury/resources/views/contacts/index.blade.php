@@ -31,6 +31,56 @@
             </div>
         </div>
 
+        <!-- Search Form -->
+        <form method="get" action="{{ route('contacts.index') }}" class="mb-8">
+            <div class="bg-white rounded-xl shadow-md p-4">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input 
+                            type="text" 
+                            name="search" 
+                            value="{{ $search ?? '' }}" 
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition duration-200 @error('nom') border-red-500 @enderror" 
+                            placeholder="Rechercher par nom..."
+                        >
+                    </div>
+                    <!-- <div>
+                        <select name="filtre" class="pl-4 text-center pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition duration-200 appearance-none bg-white">
+                            <option value="" disabled selected>--Filtrage--</option>
+                            <option value="Famille">Famille</option>
+                            <option value="Travail">Travail</option>
+                            <option value="Gaming">Gaming</option>
+                        </select>
+                    </div> -->
+                    <div class="flex gap-2">
+                        <button 
+                            type="submit" 
+                            class="inline-flex items-center justify-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition duration-200 shadow-sm hover:shadow-md"
+                        >
+                            <svg class="w-5 h-5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <span class="hidden sm:inline">Rechercher</span>
+                        </button>
+                        <a 
+                            href="{{ route('contacts.index') }}" 
+                            class="inline-flex items-center justify-center px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200 shadow-sm hover:shadow-md"
+                        >
+                            <svg class="w-5 h-5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            <span class="hidden sm:inline">Réinitialiser</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <!-- Success Message -->
         @if(session('success'))
             <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 animate-fade-in">
@@ -53,7 +103,7 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Aucun contact trouvé</h3>
-                <p class="text-gray-600 mb-6">Commencez par ajouter votre premier contact</p>
+                <p class="text-gray-600 mb-6">Commencez par ajouter un contact</p>
                 <a 
                     href="{{ route('contacts.create') }}"
                     class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition duration-200"
@@ -61,7 +111,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Ajouter votre premier contact
+                    Ajouter un contact
                 </a>
             </div>
         @else
@@ -71,7 +121,7 @@
                     <table class="w-full">
                         <thead class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
                             <tr>
-                                <th class="px-6 py-4 text-left text-sm font-semibold">Nom</th>s
+                                <th class="px-6 py-4 text-left text-sm font-semibold">Nom</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Email</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Téléphone</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold">Groupe</th>
@@ -79,6 +129,11 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
+                            @if($contacts->count() === 0)
+                                <div class="alert alert-warning">
+                                    Aucun contact trouvé
+                                </div>
+                            @endif
                             @foreach($contacts as $contact)
                                 <tr class="hover:bg-gray-50 transition duration-150">
                                     <td class="px-6 py-4">

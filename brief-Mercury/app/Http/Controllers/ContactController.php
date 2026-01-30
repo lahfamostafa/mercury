@@ -11,9 +11,17 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */ 
-    public function index(){
-        $contacts = Contact::all();
-        return view('contacts.index' ,compact('contacts'));
+    public function index(Request $request){
+        $search = $request->query('search');
+        // $filtre = $request->query('filtre');
+
+        $contacts = Contact::query()->when($search,function ($q) use ($search) {
+            $q->where('nom','like','%' . $search . '%');
+        })->orderBy('nom')->get();
+        // $contacts = Contact::query()->when($filtre,function ($f) use ($filtre){
+        //     $f->where('group',)
+        // });
+        return view('contacts.index' ,compact('contacts','search'));
     }
 
     /**
